@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face to Sticker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading::after {
+            content: 'Loading...';
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Face to Sticker</h1>
+        <div class="image-container">
+            <img id="sticker" src="assets/images/placeholder.jpg" alt="Sticker" />
+        </div>
+        <div class="loading" id="loading"></div>
+        <input type="file" id="fileInput" accept="image/*">
+        <label for="fileInput" class="btn">Upload Image</label>
+    </div>
+
+    <script type="module">
+        import * as fal from "@fal-ai/serverless-client";
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const fileInput = document.getElementById("fileInput");
+            const stickerImage = document.getElementById("sticker");
+            const loadingDiv = document.getElementById("loading");
+
+            fileInput.addEventListener("change", handleFileUpload);
+
+            async function handleFileUpload(event) {
+                const file = event.target.files[0];
+                const imageUrl = URL.createObjectURL(file);
+
+                stickerImage.src = imageUrl;
+                loadingDiv.textContent = "Loading...";
+
+                try {
+                    const result = await fal.subscribe("fal-ai/face-to-sticker", {
+                        input: {
+                            image_url: imageUrl,
+                            prompt: "a person"
+                        },
+                        logs: true,
+                        onQueueUpdate: (update) => {
+                            if (update.status === "IN_PROGRESS") {
+                                update.logs.map((log) => log.message).forEach(console.log);
+                            }
+                        },
+                    });
+
+                    stickerImage.src = result.output.sticker_url;
+                    loadingDiv.textContent = "";
+                } catch (error) {
+                    console.error('Помилка:', error);
+                    loadingDiv.textContent = "Помилка при обробці зображення";
+                }
+            }
+        });
+    </script></body>
+</html>
