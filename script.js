@@ -4,6 +4,8 @@ button.addEventListener("click", async () => {
   const imageUrlInput = document.getElementById("imageUrlInput").value.trim();
   if (!imageUrlInput) {
     alert("Please enter the image URL.");
+    alert("Please enter the image URL.");
+    alert("Please enter the image URL.");
     return;
   }
 
