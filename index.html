@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face to Sticker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading::after {
+            content: 'Loading...';
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Face to Sticker</h1>
+        <div class="image-container">
+            <img id="sticker" src="assets/images/placeholder.jpg" alt="Sticker" />
+        </div>
+        <img id="sticker_image">
+        <img id="sticker_image_background_removed">
+        
+        <input type="text" id="imageUrlInput" placeholder="Enter image URL">
+        <button id="submitUrlBtn" class="btn">Create Sticker</button>
+    </div>
+
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
